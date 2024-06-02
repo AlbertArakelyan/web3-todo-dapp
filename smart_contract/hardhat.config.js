@@ -3,7 +3,7 @@ require("@nomicfoundation/hardhat-ethers");
 require("dotenv").config();
 
 /*
-Videous for deploying hardhat localhost
+Videos for deploying hardhat localhost
 https://www.youtube.com/watch?v=dgdTyTl2Z18
 https://www.youtube.com/watch?v=v4KIZsr7cBc
 https://www.youtube.com/watch?v=yD3BsYlRLA4&t=45s
