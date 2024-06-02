@@ -2,7 +2,7 @@
 
 <div align="center">
   <img src="./client/public/screenshot2.png" alt="Screenshot">
-</div
+</div>
 
 <div align="center">
   <img src="https://img.shields.io/badge/Ethereum-3C3C3D?style=for-the-badge&logo=Ethereum&logoColor=white" alt="Ethereum">
