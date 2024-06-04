@@ -1,97 +1,47 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.24;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-import "hardhat/console.sol";
+contract ToDoList {
+    uint public taskCount = 0;
 
-contract Todo {
-  uint public target;
-  address payable public owner;
-
-  struct TodoItem {
-    uint256 id;
-    string title;
-    bool isCompleted;
-    address owner;
-  }
-
-  TodoItem[] public todos;
-
-  // constructor(uint _target) payable {
-  //   target = _target;
-  //   owner = payable(msg.sender);
-  // }
-
-  function getMyTodos(
-    address _owner
-  ) public view returns (TodoItem[] memory) {
-    // uint count;
-    // for (uint i = 0; i < todos.length; i++) {
-    //   if (todos[i].owner == _owner) {
-    //     count++;
-    //   }
-    // }
-
-    // TodoItem[] memory result = new TodoItem[](count);
-    // uint index;
-    // for (uint i = 0; i < todos.length; i++) {
-    //   if (todos[i].owner == _owner) {
-    //     result[index] = todos[i];
-    //     index++;
-    //   }
-    // }
-
-    // return result;
-
-    TodoItem[] memory result = new TodoItem[](0);
-
-    for (uint i = 0; i < todos.length; i++) {
-      if (todos[i].owner == _owner) {
-        TodoItem[] memory temp = new TodoItem[](result.length+1);
-        for (uint j = 0; j < result.length; j++) {
-            temp[j] = result[j];
-        }
-        temp[result.length] = todos[i];
-        result = temp;
-      }
+    struct Task {
+        uint id;
+        string content;
+        bool completed;
     }
 
-    return result;
+    mapping(uint => Task) public tasks;
+    mapping(uint => bool) public taskExists;
 
-  }
+    event TaskCreated(uint id, string content, bool completed);
+    event TaskCompleted(uint id, bool completed);
+    event TaskDeleted(uint id);
 
-  function addTodo(string memory _title) public returns (TodoItem memory) {
-    TodoItem memory newTodo = TodoItem(
-      block.timestamp,
-      _title,
-      false,
-      msg.sender
-    );
-    todos.push(newTodo);
-    return newTodo;
-  }
+    function createTask(string memory _content) public {
+        taskCount ++;
+        tasks[taskCount] = Task(taskCount, _content, false);
+        taskExists[taskCount] = true;
+        emit TaskCreated(taskCount, _content, false);
+    }
 
-  function toggleTodo(uint _id) public returns (uint256) {
-    TodoItem storage todo = todos[_id];
-    require(todo.owner == msg.sender, "Only the owner can toggle this todo.");
-    todo.isCompleted = !todo.isCompleted;
-    return _id;
-  }
+    function toggleTaskCompleted(uint _id) public {
+        require(taskExists[_id], "Task does not exist.");
+        Task memory _task = tasks[_id];
+        _task.completed = !_task.completed;
+        tasks[_id] = _task;
+        emit TaskCompleted(_id, _task.completed);
+    }
 
-  function deleteTodo(uint256 _id) public {
-    require(_id < todos.length, "Invalid Todo ID.");
-    TodoItem storage todo = todos[_id];
-    require(todo.owner == msg.sender, "Only the owner can delete this todo.");
+    function getTask(uint _id) public view returns (uint, string memory, bool) {
+        require(taskExists[_id], "Task does not exist.");
+        Task memory _task = tasks[_id];
+        return (_task.id, _task.content, _task.completed);
+    }
 
-    // Swap the item to delete with the last item
-    todos[_id] = todos[todos.length - 1];
-    todos.pop();
-  }
-
-  function getAllTodosCount() public view returns (uint) {
-    return todos.length;
-  }
-
-  function getAllTodos() public view returns (TodoItem[] memory) {
-    return todos;
-  }
+    function deleteTask(uint _id) public {
+        require(taskExists[_id], "Task does not exist.");
+        delete tasks[_id];
+        taskExists[_id] = false;
+        emit TaskDeleted(_id);
+    }
 }

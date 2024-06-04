@@ -50,30 +50,44 @@ const TodoProvider = ({ children }: { children: React.ReactNode }) => {
 
   const addTodo = async (value: string) => {
     const todoContract = await getTodoEthereumContract();
-
     const transactionHash = await todoContract.addTodo(value);
 
     setIsLoading(true);
-
     console.log(`Loading - ${transactionHash.hash}`);
-
     await transactionHash.wait();
-
     setIsLoading(false);
-
     console.log(`Success - ${transactionHash.hash}`);
 
     const allTodos = await todoContract.getAllTodos();
-
     setTodos(allTodos);
   };
 
-  const deleteTodo = (id: string) => {
-    setTodos(todos.filter(todo => todo.id !== id));
+  const deleteTodo = async (id: string) => {
+    const todoContract = await getTodoEthereumContract();
+    const transactionHash = await todoContract.deleteTodo(id);
+
+    setIsLoading(true);
+    console.log(`Loading - ${transactionHash.hash}`);
+    await transactionHash.wait();
+    setIsLoading(false);
+    console.log(`Success - ${transactionHash.hash}`);
+
+    const allTodos = await todoContract.getAllTodos();
+    setTodos(allTodos);
   };
 
-  const toggleTodo = (id: string) => {
-    setTodos(todos.map(todo => todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo));
+  const toggleTodo = async (id: string) => {
+    const todoContract = await getTodoEthereumContract();
+    const transactionHash = await todoContract.toggleTodo(id);
+
+    setIsLoading(true);
+    console.log(`Loading - ${transactionHash.hash}`);
+    await transactionHash.wait();
+    setIsLoading(false);
+    console.log(`Success - ${transactionHash.hash}`);
+
+    const allTodos = await todoContract.getAllTodos();
+    setTodos(allTodos);
   };
 
   const checkIfWalltedConnected = async () => {

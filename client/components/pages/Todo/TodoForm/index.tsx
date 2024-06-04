@@ -29,9 +29,6 @@ const TodoForm = () => {
     setValue("");
   };
 
-  console.log(111,isLoading);
-  
-
   return (
     <form className={`flex items-center justify-center w-full mb-4 relative bg-stone-100 ${isLoading ? 'opacity-60 pointer-events-none' : ''}`} onSubmit={handleSubmit}>
       <Input className="mr-2 max-w-64 w-full" value={value} onChange={handleChange} />
