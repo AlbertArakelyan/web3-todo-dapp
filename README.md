@@ -11,5 +11,5 @@
 </div>
 
 <p align="center" style="width: 90%; margin: 0 auto">
-  A simple todolist which does its all actions e.g. creation, getting, deleting in the <b>Smart Contract</b>. Purpose was jsut creating a simple <b>Smart Contract</b> with different functions and use them on <i>frontend</i>.
+  A simple todolist which does its all actions e.g. creation, getting, deleting in the <b>Smart Contract</b>. Purpose was jsut creating a simple <b>Smart Contract</b> with different functions and use them on <i>frontend</i>. This is just an example for draft, there two different Smart Contracts working in different ways. But the best Todo list from my side based on this is yet to come ^^
 </p>
