@@ -72,14 +72,19 @@ contract Todo {
 
   function toggleTodo(uint _id) public returns (uint256) {
     TodoItem storage todo = todos[_id];
+    require(todo.owner == msg.sender, "Only the owner can toggle this todo.");
     todo.isCompleted = !todo.isCompleted;
     return _id;
   }
 
-  function deleteTodo(uint _id) public returns (uint256) {
+  function deleteTodo(uint256 _id) public {
+    require(_id < todos.length, "Invalid Todo ID.");
+    TodoItem storage todo = todos[_id];
+    require(todo.owner == msg.sender, "Only the owner can delete this todo.");
+
+    // Swap the item to delete with the last item
     todos[_id] = todos[todos.length - 1];
     todos.pop();
-    return _id;
   }
 
   function getAllTodosCount() public view returns (uint) {
@@ -88,9 +93,5 @@ contract Todo {
 
   function getAllTodos() public view returns (TodoItem[] memory) {
     return todos;
-  }
-
-  function return5() public view returns (uint) {
-    return 5;
   }
 }
